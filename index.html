@@ -51,14 +51,14 @@
             color: var(--text-main);
             min-height: 100vh;
             overflow-x: hidden;
-            /* Tạo họa tiết giấy kẻ ô ly */
+
             background-image: 
                 linear-gradient(var(--grid-color) 1px, transparent 1px),
                 linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
             background-size: 30px 30px;
         }
 
-        /* ================= DECORATIONS (VẬT TRANG TRÍ) ================= */
+        /* ================= DECORATIONS ================= */
         .decor {
             position: fixed;
             pointer-events: none;
@@ -66,7 +66,11 @@
             z-index: 0;
             filter: grayscale(0.5);
         }
-        [data-theme="dark"] .decor { opacity: 0.1; filter: invert(1); }
+
+        [data-theme="dark"] .decor {
+            opacity: 0.1;
+            filter: invert(1);
+        }
 
         .decor-1 { top: 10%; left: 5%; transform: rotate(-15deg); font-size: 3rem; }
         .decor-2 { bottom: 15%; right: 8%; transform: rotate(20deg); font-size: 4rem; }
@@ -96,6 +100,13 @@
             gap: 10px;
         }
 
+        /* ====== NHÓM NÚT HEADER ====== */
+        .header-buttons {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
         .btn-theme {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
@@ -108,11 +119,18 @@
             gap: 8px;
             font-weight: 600;
             box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            text-decoration: none;
         }
 
         .btn-theme:hover {
             transform: scale(1.05);
             background: var(--primary);
+            color: white;
+        }
+
+        /* ====== FEEDBACK BUTTON ====== */
+        .feedback-btn:hover {
+            background: #8b5cf6;
             color: white;
         }
 
@@ -170,7 +188,10 @@
         .subject-card::before {
             content: '';
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 6px;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
         }
 
         .subject-card.math::before { background: var(--math-color); }
@@ -229,18 +250,23 @@
             font-size: 0.9rem;
         }
 
-        /* Animation */
+        /* ================= ANIMATION ================= */
         @keyframes floating {
             0% { transform: translateY(0px) rotate(0deg); }
             50% { transform: translateY(-10px) rotate(5deg); }
             100% { transform: translateY(0px) rotate(0deg); }
         }
-        .decor { animation: floating 6s ease-in-out infinite; }
+
+        .decor {
+            animation: floating 6s ease-in-out infinite;
+        }
+
         .decor-2 { animation-delay: 1s; }
         .decor-3 { animation-delay: 2s; }
 
     </style>
 </head>
+
 <body>
 
     <div class="decor decor-1">📚</div>
@@ -249,22 +275,41 @@
     <div class="decor decor-4">🎨</div>
 
     <header>
+
         <div class="logo">
             <span>🎓 Tài Liệu Lớp 9 - Ôn Thi Vào 10</span>
         </div>
-        <button class="btn-theme" id="theme-toggle">
-            <span id="theme-icon">🌙</span>
-            <span id="theme-text">Chế độ tối</span>
-        </button>
+
+        <!-- NHÓM NÚT BÊN PHẢI -->
+        <div class="header-buttons">
+
+            <!-- FEEDBACK -->
+            <a href="https://forms.gle/28cG9E5oVxNnJia16"
+               target="_blank"
+               class="btn-theme feedback-btn">
+                <span>💬</span>
+                <span>Feedback</span>
+            </a>
+
+            <!-- THEME -->
+            <button class="btn-theme" id="theme-toggle">
+                <span id="theme-icon">🌙</span>
+                <span id="theme-text">Chế độ tối</span>
+            </button>
+
+        </div>
+
     </header>
 
     <div class="container">
+
         <section class="hero">
             <h1>Tài Liệu Học Tập Lớp 9</h1>
             <p>Tổng Hợp Tài Liệu Tại Nhiều Nguồn - Bí Kíp Đạt Điểm Cao 🎯</p>
         </section>
 
         <main class="subjects-grid">
+
             <a href="https://hwlonggg.github.io/Maths-Learning-Website/" class="subject-card math">
                 <div class="icon-circle">📐</div>
                 <h2>Môn Toán</h2>
@@ -285,44 +330,64 @@
                 <p>Hệ thống ngữ pháp, từ vựng theo chương trình và các đề thi thử từ nhiều tỉnh thành.</p>
                 <div class="btn-enter">Vào học ngay</div>
             </a>
+
         </main>
     </div>
 
     <footer>
-        <p>&copy;Website học tập dành cho học sinh lớp 9 ✍️ - Created by Nguyễn Hoàng Long 🔥</p>
+        <p>&copy; Website học tập dành cho học sinh lớp 9 ✍️ - Created by Nguyễn Hoàng Long 🔥</p>
     </footer>
 
     <script>
+
         const themeToggle = document.getElementById('theme-toggle');
         const themeIcon = document.getElementById('theme-icon');
         const themeText = document.getElementById('theme-text');
         const html = document.documentElement;
 
-        // Kiểm tra cấu hình theme cũ từ localStorage
+        // Kiểm tra theme cũ
         const savedTheme = localStorage.getItem('theme');
+
         if (savedTheme) {
             html.setAttribute('data-theme', savedTheme);
             updateToggleButton(savedTheme);
         }
 
+        // Đổi theme
         themeToggle.addEventListener('click', () => {
+
             let currentTheme = html.getAttribute('data-theme');
-            let newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            
+
+            let newTheme = currentTheme === 'dark'
+                ? 'light'
+                : 'dark';
+
             html.setAttribute('data-theme', newTheme);
+
             localStorage.setItem('theme', newTheme);
+
             updateToggleButton(newTheme);
+
         });
 
+        // Cập nhật nút
         function updateToggleButton(theme) {
+
             if (theme === 'dark') {
+
                 themeIcon.innerText = '☀️';
                 themeText.innerText = 'Chế độ sáng';
+
             } else {
+
                 themeIcon.innerText = '🌙';
                 themeText.innerText = 'Chế độ tối';
+
             }
+
         }
+
     </script>
+
 </body>
 </html>
